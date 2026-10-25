@@ -204,7 +204,17 @@ body::after {
 .tags li { font-size: 0.82rem; padding: 5px 12px; border-radius: 20px; background: var(--chip-bg); border: 1px solid var(--border); }
 
 /* ---------- projects ---------- */
-.filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 34px 0 30px; }
+.proj-tools { display: flex; flex-direction: column; align-items: center; gap: 16px; margin: 34px 0 30px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.search { width: 100%; max-width: 420px; }
+.search input {
+  width: 100%; padding: 11px 18px; border-radius: 30px;
+  background: var(--card); border: 1px solid var(--border); color: var(--text);
+  font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s;
+}
+.search input:focus { outline: none; border-color: var(--accent); }
+.proj-count { color: var(--muted); font-size: 0.85rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .filter {
   padding: 8px 18px; border-radius: 30px; cursor: pointer;
   border: 1px solid var(--border); background: var(--card); color: var(--muted);
@@ -238,6 +248,8 @@ body::after {
 .pcard.featured h3 { font-size: 1.45rem; }
 .pnote { color: var(--muted); font-size: 0.95rem; font-weight: 500; white-space: nowrap; }
 .empty-state { text-align: center; color: var(--muted); margin-top: 30px; }
+.empty-state b { color: var(--text); }
+.empty-state .btn { margin-top: 16px; }
 
 /* ---------- experience timeline ---------- */
 .timeline { max-width: 760px; margin: 40px auto 0; position: relative; padding-left: 30px; }

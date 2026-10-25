@@ -161,10 +161,17 @@
       <h2 class="section-title center">Projects</h2>
       <p class="section-sub center">A mix of autonomous-systems engineering and products people use.</p>
 
-      <div class="filters" id="filters" role="group" aria-label="Filter projects by category">
-        <button class="filter active" type="button" data-filter="all" aria-pressed="true">All</button>
-        <button class="filter" type="button" data-filter="ai" aria-pressed="false">AI &amp; Autonomy</button>
-        <button class="filter" type="button" data-filter="web" aria-pressed="false">Web &amp; Full-stack</button>
+      <div class="proj-tools">
+        <div class="filters" id="filters" role="group" aria-label="Filter projects by category">
+          <button class="filter active" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="ai" aria-pressed="false">AI &amp; Autonomy</button>
+          <button class="filter" type="button" data-filter="web" aria-pressed="false">Web &amp; Full-stack</button>
+        </div>
+        <div class="search">
+          <label for="projSearch" class="sr-only">Search projects</label>
+          <input type="search" id="projSearch" placeholder="Search projects, e.g. Flask or drones" autocomplete="off" />
+        </div>
+        <p class="proj-count" id="projCount" aria-live="polite">Showing all 7 projects</p>
       </div>
 
       <div class="proj-grid" id="projGrid">
@@ -246,7 +253,10 @@
         </article>
       </div>
 
-      <p class="empty-state" id="projEmpty" hidden>No projects in this category yet.</p>
+      <div class="empty-state" id="projEmpty" hidden>
+        <p>No projects match <b id="projEmptyTerm"></b>. Try another word or show everything again.</p>
+        <button class="btn ghost" type="button" id="projReset">Show all projects</button>
+      </div>
     </section>
 
     <!-- ---------- experience ---------- -->

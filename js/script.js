@@ -135,29 +135,57 @@ const counterObserver = new IntersectionObserver(
 );
 document.querySelectorAll(".stat b").forEach((el) => counterObserver.observe(el));
 
-// ===== project category filter =====
+// ===== project filter + live search (both apply together) =====
 const filters = document.getElementById("filters");
 const projectCards = document.querySelectorAll("#projGrid .pcard");
 const projEmpty = document.getElementById("projEmpty");
+const projSearch = document.getElementById("projSearch");
+const projCount = document.getElementById("projCount");
+let activeCategory = "all";
+
+function setCategory(category) {
+  activeCategory = category;
+  filters.querySelectorAll(".filter").forEach((b) => {
+    const active = b.dataset.filter === category;
+    b.classList.toggle("active", active);
+    b.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function updateProjects() {
+  const term = projSearch.value.trim().toLowerCase();
+  let visible = 0;
+
+  projectCards.forEach((card) => {
+    const inCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+    const matches = !term || card.textContent.toLowerCase().includes(term);
+    const show = inCategory && matches;
+    card.hidden = !show;
+    if (show) visible++;
+  });
+
+  projCount.textContent =
+    visible === projectCards.length
+      ? `Showing all ${visible} projects`
+      : `Showing ${visible} of ${projectCards.length} projects`;
+  document.getElementById("projEmptyTerm").textContent = term ? `"${projSearch.value.trim()}"` : "this filter";
+  projEmpty.hidden = visible > 0;
+}
 
 filters.addEventListener("click", (e) => {
   const button = e.target.closest(".filter");
   if (!button) return;
+  setCategory(button.dataset.filter);
+  updateProjects();
+});
 
-  filters.querySelectorAll(".filter").forEach((b) => {
-    const active = b === button;
-    b.classList.toggle("active", active);
-    b.setAttribute("aria-pressed", String(active));
-  });
+projSearch.addEventListener("input", updateProjects);
 
-  const category = button.dataset.filter;
-  let visible = 0;
-  projectCards.forEach((card) => {
-    const show = category === "all" || card.dataset.category === category;
-    card.hidden = !show;
-    if (show) visible++;
-  });
-  projEmpty.hidden = visible > 0;
+document.getElementById("projReset").addEventListener("click", () => {
+  projSearch.value = "";
+  setCategory("all");
+  updateProjects();
+  projSearch.focus();
 });
 
 // ===== contact form validation (front-end only, no backend) =====
