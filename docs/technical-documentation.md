@@ -48,7 +48,7 @@ in the script degrades the page instead of emptying it.
 ## 2. File structure
 
 ```
-s202348490-TurkiAndous-assignment2/
+202348490-TurkiAndous-assignment2/
 ├── index.html                      # 7 sections + nav + footer
 ├── README.md                       # project overview and setup
 ├── .gitignore

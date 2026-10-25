@@ -43,11 +43,11 @@ This is my portfolio from Assignment 1 with more interactivity added on top. It 
 Clone the repo:
 
 ```bash
-git clone https://github.com/quhtani-x/s202348490-TurkiAndous-assignment2.git
+git clone https://github.com/quhtani-x/202348490-TurkiAndous-assignment2.git
 ```
 
 ```bash
-cd s202348490-TurkiAndous-assignment2
+cd 202348490-TurkiAndous-assignment2
 ```
 
 Then start a small local server. That way the GitHub fetch behaves the same as it does online:
@@ -92,8 +92,8 @@ How each feature works, the error states and the testing I did are in [`docs/tec
 
 ## AI use
 
-I used Claude (Anthropic) through Claude Code for this assignment. It wrote the first version of the project search, the GitHub repos section, the new animations, the CSS style pass, and drafts of these docs. I reviewed and tested the result before submitting, and changed what didn't match my site or my style. The full declaration and usage log are in [`docs/ai-usage-report.md`](docs/ai-usage-report.md).
+I used Claude (Anthropic) through Claude Code for this assignment. Claude added animations, helped with the wording of my content, did a CSS style pass that fixed some styling glitches, and drafted this README and the docs. I reviewed and tested everything before submitting, and changed what didn't match my site or my style. The full declaration and usage log are in [`docs/ai-usage-report.md`](docs/ai-usage-report.md).
 
 ## Deployment
 
-The site is static, so GitHub Pages works. Go to **Settings → Pages**, set the source to `main` / root, and save. It will be at `https://quhtani-x.github.io/s202348490-TurkiAndous-assignment2/`.
+The site is static, so GitHub Pages works. Go to **Settings → Pages**, set the source to `main` / root, and save. It will be at `https://quhtani-x.github.io/202348490-TurkiAndous-assignment2/`.
