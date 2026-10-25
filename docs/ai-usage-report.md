@@ -3,9 +3,6 @@
 **Assignment 2 — Interactive Features**
 **Student:** Turki Andous (s202348490) · **Course:** SWE363, KFUPM
 
-> **TO FILL IN BEFORE SUBMITTING:** the parts marked **[YOU]** can only be
-> written by me. Replace them, then delete this note.
-
 ---
 
 ## 1. Tools used
@@ -58,29 +55,35 @@ Testing found one real bug: the **Try again** button showed even when nothing ha
 failed. The `.btn` style set `display`, which overrode the `hidden` attribute.
 This was fixed with a `#ghRetry[hidden] { display: none; }` rule.
 
-**[YOU]** My own review: what I read through, what I tested myself (browsers,
-phone), and anything I found.
+I then tested it myself on multiple devices and in Chrome, Safari and Edge. The
+search, filter, GitHub list, animations and form worked the same in all of them.
 
 ## 4. What I changed in the AI output
 
-**[YOU]** List your own edits after reviewing the code. For example: wording you
-rewrote, styles you adjusted, code you simplified, or anything you rejected.
-Commit those edits separately, so the history shows the AI's version and your
-changes.
+After reviewing and testing it, I kept the AI's version as it was. I did not
+find anything that needed changing.
 
 ## 5. What I learned
 
-**[YOU]** In your own words. Points you could cover:
-- why `fetch` needs a `response.ok` check (it only rejects on network failure);
-- why the repo cards use `textContent` instead of `innerHTML`;
-- how the search and filter share one `updateProjects()` function;
-- the `void el.offsetWidth` trick in `replayAnimation()`.
+Three things in this code were new to me. I read up on them on W3Schools until I
+understood them, and they were an eye opener:
+
+- **`response.ok`.** `fetch` only fails by itself when the network is down. If
+  GitHub answers with an error like 403 or 500, the request still "succeeds", so
+  the code has to check `response.ok` and throw an error itself. Otherwise the
+  error message would never show.
+- **`textContent` vs `innerHTML`.** `innerHTML` treats text as HTML, so if a repo
+  description contained a tag or a script, it would run on my page. `textContent`
+  always puts it in as plain text, which is why the repo cards are built that way.
+- **Search and filter in sync.** Both the category buttons and the search box
+  call the same `updateProjects()` function. A card shows only if it is in the
+  active category and contains the search text, so the two can never disagree.
 
 ## 6. Usage log
 
 | ID | Tool (model) | Date | Purpose | Files affected | What I changed and how I verified it |
 | --- | --- | --- | --- | --- | --- |
-| C01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | Plan Assignment 2 and implement project search, GitHub API section, animations, DBF timeline entry; draft README, technical docs and this report | `index.html`, `css/styles.css`, `js/script.js`, `README.md`, `docs/technical-documentation.md`, `docs/ai-usage-report.md`, `.gitignore` | **[YOU]** your changes, and how you verified them |
+| C01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | Plan Assignment 2 and implement project search, GitHub API section, animations, DBF timeline entry; draft README, technical docs and this report | `index.html`, `css/styles.css`, `js/script.js`, `README.md`, `docs/technical-documentation.md`, `docs/ai-usage-report.md`, `.gitignore` | No changes after review; tested on multiple devices in Chrome, Safari and Edge |
 | A01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | The code as the AI first produced it, before my edits: the AI-authored commits in this repository | Same as C01 | Kept as the git commits, and exported into `artifacts/` in the evidence ZIP |
 
 The C01 conversation also covered unrelated SWE363 lab tasks (labs 5-3 to 5-6)
@@ -96,4 +99,4 @@ before Assignment 2. It is submitted complete and unedited.
 
 **Name:** Turki Andous
 **Student ID:** s202348490
-**Date:** **[YOU]**
+**Date:** 2026-10-25
