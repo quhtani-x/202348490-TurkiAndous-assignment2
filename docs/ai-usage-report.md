@@ -11,7 +11,8 @@
 | --- | --- | --- |
 | Claude Code (Anthropic), a terminal coding assistant that can read and edit the project files | Claude Opus 5.5 | Wrote the first version of all the Assignment 2 code changes and the drafts of the README and technical documentation, and tested the features in a browser |
 
-I used one tool and one conversation for the whole assignment.
+I used one tool and two conversations: the first for the assignment features, and
+a second, later one for a CSS style pass and a README update (entry 3 in the usage log).
 
 ## 2. What the AI did
 
@@ -32,6 +33,16 @@ it to add what the brief requires without overdoing it. In that conversation it:
    timeline, from the details I gave it (`index.html`).
 6. **Drafted documentation.** Wrote drafts of `README.md`,
    `docs/technical-documentation.md` and this report.
+7. **CSS style pass (second conversation).** On a separate branch
+   (`style/css-refresh`), it reviewed `css/styles.css`, explained eight proposed
+   improvements, and only made them after I approved the plan: shared tokens for
+   radius and timing, one shared card style, visible focus rings on inputs, hover
+   lift only on devices with a mouse, removing both `!important` rules, small
+   layout fixes, hover polish and a dimmed background behind the mobile menu, and
+   a complete reduced-motion rule. It also found and fixed a bug where the
+   scroll-reveal transition made project cards take 0.7s instead of 0.3s to lift
+   on hover. It then updated `README.md`, including fixing a wrong example
+   ("drones" finds nothing, "drone" does).
 
 Decisions that came from me, not the AI:
 - Keeping the scope small: three features, no frameworks.
@@ -60,8 +71,7 @@ search, filter, GitHub list, animations and form worked the same in all of them.
 
 ## 4. What I changed in the AI output
 
-After reviewing and testing it, I kept the AI's version as it was. I did not
-find anything that needed changing.
+ive built mostly everything since phase 1 and before that myself for my portfolio but enhanced the wording and animations using AI , i changed some animation timing in the animations he added , also the wordings of my achievemnts as well , mostly styling was proof read by ai , and i changed some colors to match my style.
 
 ## 5. What I learned
 
@@ -83,11 +93,13 @@ understood them, and they were an eye opener:
 
 | ID | Tool (model) | Date | Purpose | Files affected | What I changed and how I verified it |
 | --- | --- | --- | --- | --- | --- |
-| C01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | Plan Assignment 2 and implement project search, GitHub API section, animations, DBF timeline entry; draft README, technical docs and this report | `index.html`, `css/styles.css`, `js/script.js`, `README.md`, `docs/technical-documentation.md`, `docs/ai-usage-report.md`, `.gitignore` | No changes after review; tested on multiple devices in Chrome, Safari and Edge |
-| A01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | The code as the AI first produced it, before my edits: the AI-authored commits in this repository | Same as C01 | Kept as the git commits, and exported into `artifacts/` in the evidence ZIP |
+1- Claude Opus 5.5 , 10-25-2206 | readme.md | i read everything he wrote and changed some things and features he said the web app had but i didnt implement it yet, i asked him to check my previous readmd.md and write me a similar one based on this assignemnt , and he did write it , but added some parts that were not true, as i checked back the code ad actaully verified that he made my site better by lying in the readmd.
 
-The C01 conversation also covered unrelated SWE363 lab tasks (labs 5-3 to 5-6)
-before Assignment 2. It is submitted complete and unedited.
+2- claude Opus 5.5 , 10-25-2026  | CSS file | i reviwed all the colors and anmiations he made , and changed them based on my prefernces. and made sure that what i changed was actually reflected in the site by testing it.  
+
+3- Claude Opus 5.5 (Claude Code, second conversation) , 10-25-2026 | `css/styles.css`, `README.md`, `docs/ai-usage-report.md` | Asked it to improve my CSS on a new branch and update my outdated README. It explained the 8 changes first and only edited the files after I approved. It tested the result in a browser at desktop and phone sizes, in dark and light themes (hover, focus rings, mobile menu, search and filter). It also added this entry and item 7 in section 2. The changes are in commits on the `style/css-refresh` branch so I can review them before merging.
+
+
 
 ## 7. Declaration
 
