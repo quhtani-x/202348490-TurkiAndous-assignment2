@@ -257,6 +257,14 @@
         <p>No projects match <b id="projEmptyTerm"></b>. Try another word or show everything again.</p>
         <button class="btn ghost" type="button" id="projReset">Show all projects</button>
       </div>
+
+      <div class="gh" id="github">
+        <h3 class="gh-title">Latest on GitHub</h3>
+        <p class="gh-sub">Pulled live from the GitHub API, most recently updated first.</p>
+        <p class="gh-status" id="ghStatus" role="status" aria-live="polite"></p>
+        <button class="btn ghost" type="button" id="ghRetry" hidden>Try again</button>
+        <ul class="gh-list" id="ghList"></ul>
+      </div>
     </section>
 
     <!-- ---------- experience ---------- -->

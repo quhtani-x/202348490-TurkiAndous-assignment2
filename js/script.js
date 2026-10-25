@@ -188,6 +188,78 @@ document.getElementById("projReset").addEventListener("click", () => {
   projSearch.focus();
 });
 
+// ===== latest public repos from the GitHub API =====
+const ghStatus = document.getElementById("ghStatus");
+const ghList = document.getElementById("ghList");
+const ghRetry = document.getElementById("ghRetry");
+
+function setGhStatus(text, type = "") {
+  ghStatus.textContent = text;
+  ghStatus.className = `gh-status ${type}`.trim();
+}
+
+function repoCard(repo) {
+  const link = document.createElement("a");
+  link.href = repo.html_url;
+  link.target = "_blank";
+  link.rel = "noopener";
+
+  const name = document.createElement("b");
+  name.textContent = repo.name;
+
+  const desc = document.createElement("p");
+  desc.textContent = repo.description || "No description yet.";
+
+  const meta = document.createElement("span");
+  meta.className = "gh-meta";
+  const updated = new Date(repo.pushed_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  [repo.language, `★ ${repo.stargazers_count}`, `Updated ${updated}`]
+    .filter(Boolean)
+    .forEach((text) => {
+      const item = document.createElement("span");
+      item.textContent = text;
+      meta.append(item);
+    });
+
+  link.append(name, desc, meta);
+  const li = document.createElement("li");
+  li.append(link);
+  return li;
+}
+
+async function loadRepos() {
+  ghRetry.hidden = true;
+  ghList.replaceChildren();
+  setGhStatus("Loading repositories…", "loading");
+
+  try {
+    const response = await fetch("https://api.github.com/users/quhtani-x/repos?sort=pushed&per_page=12");
+    if (response.status === 403) throw new Error("GitHub's hourly request limit was reached. Please try again in a few minutes.");
+    if (!response.ok) throw new Error(`GitHub answered with an error (${response.status}).`);
+
+    const repos = (await response.json()).filter((repo) => !repo.fork).slice(0, 6);
+    if (!repos.length) {
+      setGhStatus("No public repositories to show yet.");
+      return;
+    }
+
+    repos.forEach((repo) => ghList.append(repoCard(repo)));
+    setGhStatus("");
+  } catch (err) {
+    const offline = err instanceof TypeError;
+    setGhStatus(
+      offline
+        ? "Couldn't reach GitHub. Check your internet connection, then try again."
+        : `Couldn't load repositories: ${err.message}`,
+      "error"
+    );
+    ghRetry.hidden = false;
+  }
+}
+
+ghRetry.addEventListener("click", loadRepos);
+loadRepos();
+
 // ===== contact form validation (front-end only, no backend) =====
 const form = document.getElementById("contactForm");
 const formStatus = document.getElementById("formStatus");

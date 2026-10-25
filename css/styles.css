@@ -251,6 +251,27 @@ body::after {
 .empty-state b { color: var(--text); }
 .empty-state .btn { margin-top: 16px; }
 
+/* ---------- live GitHub repos ---------- */
+.gh { margin-top: 70px; text-align: center; }
+.gh-title { font-size: 1.4rem; }
+.gh-sub { color: var(--muted); font-size: 0.92rem; margin-top: 6px; }
+.gh-status { color: var(--muted); margin-top: 22px; }
+.gh-status.error { color: var(--danger); }
+.gh-status.loading::after { content: ""; display: inline-block; width: 14px; height: 14px; margin-left: 10px; vertical-align: -2px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+#ghRetry { margin-top: 14px; }
+#ghRetry[hidden] { display: none; }
+.gh-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; text-align: left; }
+.gh-list a {
+  display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 18px 20px;
+  border: 1px solid var(--border); border-radius: 16px; background: var(--card);
+  transition: transform 0.25s, border-color 0.25s;
+}
+.gh-list a:hover { transform: translateY(-4px); border-color: var(--accent2); }
+.gh-list b { font-family: "Space Grotesk", sans-serif; font-size: 1.02rem; word-break: break-word; }
+.gh-list p { color: var(--muted); font-size: 0.88rem; flex: 1; }
+.gh-meta { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 0.78rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ---------- experience timeline ---------- */
 .timeline { max-width: 760px; margin: 40px auto 0; position: relative; padding-left: 30px; }
 .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--accent), var(--accent2), transparent); }
@@ -314,7 +335,7 @@ body::after {
   .nav-actions { position: relative; z-index: 200; }
   .nav-links a { font-size: 1.1rem; }
   .burger { display: flex; z-index: 200; }
-  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-grid, .gh-list { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
 }
 
@@ -338,7 +359,7 @@ body::after {
 
 @media (max-width: 600px) {
   .photo-ring { width: 220px; height: 220px; }
-  .proj-grid { grid-template-columns: 1fr; }
+  .proj-grid, .gh-list { grid-template-columns: 1fr; }
   .stats, .contact-cards { grid-template-columns: 1fr; }
   .contact-form { padding: 24px 20px; }
 }
