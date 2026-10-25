@@ -1,6 +1,6 @@
 # Technical Documentation
 
-**Assignment 1 — Foundation & AI Integration**
+**Assignment 2 — Interactive Features**
 **Student:** Turki Andous (s202348490) · **Course:** SWE363, KFUPM
 
 ---
@@ -11,10 +11,19 @@ A static, single-page personal portfolio built with HTML5, CSS3 and vanilla
 JavaScript. It has no dependencies, no build step and no backend: the browser
 loads three files and runs.
 
+Assignment 2 builds on the Assignment 1 site. What changed:
+
+| Area | Assignment 1 | Assignment 2 |
+| --- | --- | --- |
+| Projects | Category filter only | Category filter **and** live search, a result count, and an empty state with a reset button |
+| Data | Everything hard-coded | A "Latest on GitHub" list fetched live from the GitHub REST API, with loading, error, retry and empty states |
+| Motion | Scroll reveal, hover lifts | Plus fade-in when cards reappear, staggered repo cards, a shake on invalid form fields and an animated success message |
+| Content | — | New experience entry: AIAA Design/Build/Fly team |
+
 | Property | Value |
 | --- | --- |
 | Type | Static single-page site |
-| Dependencies | None (Google Fonts is the only external request) |
+| Dependencies | None (Google Fonts and the GitHub API are the only external requests) |
 | Build step | None |
 | Backend | None — the contact form is validated client-side |
 | Total page weight | ~90 KB including the portrait and fonts |
@@ -39,14 +48,14 @@ in the script degrades the page instead of emptying it.
 ## 2. File structure
 
 ```
-s202348490-TurkiAndous-assignment1/
+s202348490-TurkiAndous-assignment2/
 ├── index.html                      # 7 sections + nav + footer
 ├── README.md                       # project overview and setup
 ├── .gitignore
 ├── css/
 │   └── styles.css                  # tokens → base → components → responsive
 ├── js/
-│   └── script.js                   # 8 independent feature blocks
+│   └── script.js                   # 9 independent feature blocks
 ├── assets/
 │   ├── resume.pdf
 │   └── images/
@@ -70,7 +79,8 @@ s202348490-TurkiAndous-assignment1/
   <section id="stats">        four animated figures
   <section id="about">        required — intro, tagline, portrait
   <section id="skills">       five grouped tag lists
-  <section id="projects">     required — filter bar + seven project cards
+  <section id="projects">     filter bar, search box, seven project cards,
+                              and the live "Latest on GitHub" list
   <section id="experience">   ordered-list timeline
   <section id="contact">      required — validated form + contact cards
 <footer class="footer">
@@ -171,7 +181,7 @@ The layout was checked at 1440px, 768px and 375px.
 ## 5. JavaScript
 
 `js/script.js` is loaded with `defer`, so it runs after the HTML is parsed —
-no `DOMContentLoaded` wrapper is needed. It is organised into eight independent
+no `DOMContentLoaded` wrapper is needed. It is organised into nine independent
 blocks; none depends on another.
 
 ### 5.1 Theme toggle
@@ -217,12 +227,28 @@ A second observer at `threshold: 0.5` animates each figure from 0 to its
 `data-dec`, `data-prefix` and `data-suffix` attributes. The HTML contains the
 real final values, so the content is correct even if the script never runs.
 
-### 5.7 Project filter
+### 5.7 Project filter and live search
 
-A single click listener on the filter bar (event delegation — one listener
-instead of three) compares `button.dataset.filter` with each card's
-`data-category`, toggling the `hidden` property. An empty-state paragraph is
-shown if a category has no matches.
+The category buttons and the search box drive one function, `updateProjects()`,
+so the two always agree. A card is shown only if it is in the active category
+**and** its text contains the search term:
+
+```js
+const inCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+const matches = !term || card.textContent.toLowerCase().includes(term);
+card.hidden = !(inCategory && matches);
+```
+
+- The search runs on the `input` event, so results update on every keystroke.
+  Seven cards is small enough that no debounce is needed.
+- Searching `textContent` means the title, description and tech chips are all
+  searchable ("flask", "drones", "RAG") without keeping a separate index.
+- A live count ("Showing 2 of 7 projects") sits in an `aria-live` region so
+  screen-reader users hear the result too.
+- When nothing matches, the empty state names the search term and offers a
+  **Show all projects** button that clears the search and the filter.
+- The filter bar still uses one delegated click listener instead of one per
+  button.
 
 ### 5.8 Contact form validation
 
@@ -243,6 +269,49 @@ Errors clear as the visitor types and are re-checked on `blur`.
 
 There is no backend, as the brief specifies — nothing is transmitted.
 
+### 5.9 Latest repositories from the GitHub API
+
+`loadRepos()` requests
+`https://api.github.com/users/quhtani-x/repos?sort=pushed&per_page=12`,
+drops forks, keeps the six most recently pushed, and renders a card for each
+(name, description, language, stars, last update).
+
+| State | What the visitor sees |
+| --- | --- |
+| Loading | "Loading repositories…" with a small spinner |
+| Success | Up to six repo cards |
+| No repos | "No public repositories to show yet." |
+| Offline / network error (`TypeError` from `fetch`) | "Couldn't reach GitHub. Check your internet connection, then try again." + **Try again** |
+| Rate limited (HTTP 403) | Explains GitHub's hourly limit and to retry in a few minutes + **Try again** |
+| Any other HTTP error | The status code + **Try again** |
+
+`response.ok` is checked explicitly, because `fetch` only rejects on network
+failure, not on a 404 or 500. Cards are built with `createElement` and
+`textContent` rather than `innerHTML`, so a repo description can never inject
+markup into the page.
+
+### 5.10 Animations
+
+All new motion is CSS keyframes on `transform` and `opacity`. JavaScript only
+adds a class, through a small helper that lets the same animation replay:
+
+```js
+function replayAnimation(el, className) {
+  el.classList.remove(className);
+  void el.offsetWidth;   // forces a reflow so the browser restarts the animation
+  el.classList.add(className);
+}
+```
+
+| Animation | Trigger |
+| --- | --- |
+| `fade-up` | A project card that was hidden comes back after filtering or searching |
+| `fade-up`, staggered 60 ms | Repo cards appearing after the fetch |
+| `shake` | Each invalid field when the form is submitted |
+| `slide-in` | The success message after a valid submit |
+
+Every one of them is switched off under `prefers-reduced-motion: reduce`.
+
 ---
 
 ## 6. Browser support
@@ -251,6 +320,7 @@ There is no backend, as the brief specifies — nothing is transmitted.
 | --- | --- |
 | CSS Grid, Flexbox, custom properties | Chrome 49+, Firefox 31+, Safari 9.1+, Edge 16+ |
 | `IntersectionObserver` | Chrome 51+, Firefox 55+, Safari 12.1+ |
+| `fetch`, `async`/`await`, `replaceChildren()` | Chrome 86+, Firefox 78+, Safari 14+ |
 | `backdrop-filter` | Chrome 76+, Safari 9+ (`-webkit-` prefix included) |
 | `aspect-ratio`, `clamp()` | Chrome 88+, Firefox 89+, Safari 15+ |
 
@@ -270,6 +340,10 @@ legible.
 | Theme toggle | Switched themes, reloaded, cleared `localStorage` | Choice persists; falls back to OS preference |
 | Form validation | Empty submit, `a@b`, 3-character message, valid submit | Correct error per field; focus moves to the first invalid field |
 | Project filter | Each of the three categories | Correct cards shown; counts match |
+| Project search | Typed "flask", then switched to the AI filter, then pressed **Show all projects** | 2 of 7 shown; then 0 with the empty state naming "flask"; then all 7 and the search box cleared |
+| GitHub list — success | Normal page load | Six repo cards, no status text, retry button hidden |
+| GitHub list — failures | Replaced `fetch` in the console with a network error, a 403 and an empty array | The offline message, the rate-limit message and the empty message respectively; retry button shown for the two errors |
+| Animations | Filtered and un-filtered, submitted the empty form, then a valid one | Cards fade back in, all three fields shake, success message slides in |
 | Keyboard navigation | Tabbed from the top of the page | The skip link is the first focusable element and slides into view; focus then moves through the nav and controls |
 | Console | Loaded the page and exercised every control | No errors or warnings |
 | Links | Clicked every internal anchor and external link | No broken links |
@@ -283,10 +357,14 @@ legible.
   function.
 - **Project thumbnails are placeholder artwork**, not screenshots of the running
   projects, as the brief permits.
+- **The GitHub API allows 60 unauthenticated requests per hour per IP.** A
+  visitor who reloads the page many times will hit the rate-limit message.
+  Caching the response in `sessionStorage` would fix that.
 - **Google Fonts is an external request.** Self-hosting the two font families
   would remove it at the cost of ~60 KB in the repository.
 
 ## 9. Possible extensions
 
 Planned for later assignments: real project screenshots, a working form backend,
-a project detail page per card, and self-hosted fonts.
+a project detail page per card, self-hosted fonts, and caching the GitHub
+response.

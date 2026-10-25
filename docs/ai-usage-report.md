@@ -1,175 +1,99 @@
 # AI Usage Report
 
-**Assignment 1 — Foundation & AI Integration**
+**Assignment 2 — Interactive Features**
 **Student:** Turki Andous (s202348490) · **Course:** SWE363, KFUPM
 
----
-
-## 1. Tools Used & Use Cases
-
-### Claude (Anthropic), used through Claude Code
-
-Claude Code is a terminal-based AI coding assistant that can read and edit files
-in the project directory. It was my primary AI tool for this assignment. I chose
-a single tool deliberately: it could see the whole repository at once, so its
-suggestions stayed consistent with the code that already existed instead of
-being context-free snippets.
-
-I used it for five distinct jobs:
-
-| # | Use case | What I asked for | What I got back |
-| --- | --- | --- | --- |
-| 1 | **Refactoring for theming** | "Take this dark-only stylesheet and restructure it so a light theme is one variable swap." | Every hard-coded colour moved into CSS custom properties on `:root`, plus a `:root[data-theme="light"]` block that only redefines the tokens. |
-| 2 | **Code generation** | "Write client-side validation for a Name / Email / Message form with inline errors and no backend." | The `rules` object and `validateField()` function in `js/script.js`. |
-| 3 | **Asset generation** | "Generate lightweight placeholder thumbnails for these projects — no external services." | A short Python script that wrote seven hand-tuned SVG files into `assets/images/projects/`. |
-| 4 | **Code review** | "Review this CSS for colour-contrast and accessibility problems in both themes." | Four concrete findings, including the contrast failure described in section 4. |
-| 5 | **Documentation support** | "Draft the technical documentation section on the CSS architecture , and formalize the Ai usage report draft I wrote, and finalize the readme.md." | A first draft of `docs/technical-documentation.md`, which I then rewrote to match how I had actually structured the file and a draft of readme.md and Ai usage , which I revised and polished where ever needed or made errors. |
-
-### Why not more tools
-
-The rubric rewards *meaningful* AI use, not the number of logos. Splitting the
-work across three assistants would have meant three of them holding partial
-context and contradicting each other and would require more time to review and coordinate  — especially on the design tokens, where
-one inconsistent colour breaks the whole light theme.
+> **TO FILL IN BEFORE SUBMITTING:** the parts marked **[YOU]** can only be
+> written by me. Replace them, then delete this note.
 
 ---
 
-## 2. Benefits & Challenges
+## 1. Tools used
 
-### Benefits
+| Tool | Model | How I used it |
+| --- | --- | --- |
+| Claude Code (Anthropic), a terminal coding assistant that can read and edit the project files | Claude Opus 5.5 | Wrote the first version of all the Assignment 2 code changes and the drafts of the README and technical documentation, and tested the features in a browser |
 
-**It removed the mechanical work, not the thinking.** Converting roughly forty
-hard-coded colour values into tokens is the kind of task where a human makes one
-typo and spends twenty minutes finding it. The AI did it in a single pass, which
-left my time for the decisions that actually mattered — which breakpoints to
-use, what belongs in HTML versus JavaScript, what "simple" means for this
-assignment.
+I used one tool and one conversation for the whole assignment.
 
-**It was a genuinely useful reviewer.** Asking "what's wrong with this?" turned
-out to be more valuable than asking "write this for me". The contrast bug in
-section 4 is something I would have shipped, because on my own screen the light
-theme looked fine.
+## 2. What the AI did
 
-**It accelerated the parts I already understood.** Writing the sixth project
-card by hand after five identical ones teaches nothing. Describing the pattern
-once and reviewing the output was faster and equally correct.
+I gave Claude my Assignment 1 repository and the Assignment 2 brief, and asked
+it to add what the brief requires without overdoing it. In that conversation it:
 
-**It made an unfamiliar area approachable.** I had not used `IntersectionObserver`
-before. Instead of only pasting the code, I asked it to explain `rootMargin`,
-which is why the active-nav-link observer uses `-45% 0px -50% 0px` — a band
-across the middle of the viewport — rather than the default.
+1. **Set up the project.** Copied my Assignment 1 site into a new local folder as
+   the starting point.
+2. **Added live project search.** Added a search box that works together with
+   the existing category filter, a result counter, and an empty state with a reset
+   button (`index.html`, `css/styles.css`, `js/script.js`).
+3. **Added the GitHub repos section.** Fetches my latest public repos from the
+   GitHub API, with loading, error, retry and empty states (same three files).
+4. **Added animations.** Fade-in for cards, a shake on invalid form fields, and an
+   animated success message, all disabled under reduced motion (`css/styles.css`,
+   `js/script.js`).
+5. **Updated content.** Added my AIAA Design/Build/Fly role to the experience
+   timeline, from the details I gave it (`index.html`).
+6. **Drafted documentation.** Wrote drafts of `README.md`,
+   `docs/technical-documentation.md` and this report.
 
-### Challenges
+Decisions that came from me, not the AI:
+- Keeping the scope small: three features, no frameworks.
+- Building on Assignment 1 rather than starting over.
+- Adding the DBF role.
+- The README tone: plain and not overly polished.
 
-**It over-engineers by default.** The first version of the portfolio it proposed
-included a project archive of eighty repositories, a testimonials carousel and a
-blog section. The assignment brief explicitly says *"keep this simple, focus on
-clarity and structure, not over-design"*. I had to push back and cut the site
-down to the sections that earn marks. **AI optimises for impressive, not for the
-rubric.**
+## 3. How the output was checked
 
-**It reaches for dependencies I did not need.** It suggested Bootstrap for the
-grid and an external placeholder-image service for the thumbnails. Both would
-have worked, and both would have made the page slower and less my own work.
-Plain CSS Grid is about fifteen lines here.
+The AI ran the site on a local server and tested each feature in a browser before
+committing it:
 
-**It is confidently wrong about visual results.** The AI cannot see the rendered
-page. It assured me the light theme was "high contrast" while the cyan accent
-was effectively unreadable on a white card. Anything visual has to be verified
-in a browser — the AI's claim is not evidence.
+- **Search.** Typing "flask" leaves 2 of 7 projects. Adding the AI filter shows
+  the empty state, and the reset button brings all 7 back.
+- **GitHub list.** The normal load shows six repos. Replacing `fetch` with a
+  network error, an HTTP 403 and an empty response each shows the right message.
+- **Animations and form.** Invalid fields shake, and a valid submit shows the
+  animated success message.
 
-**Accepting code you have not read is a trap.** I initially kept an AI-written
-validation snippet that used `type="email"` and relied on the browser's built-in
-bubble. It worked in Chrome and looked completely different in Safari. If I had
-not read it and tested it, that inconsistency would have shipped.
+Testing found one real bug: the **Try again** button showed even when nothing had
+failed. The `.btn` style set `display`, which overrode the `hidden` attribute.
+This was fixed with a `#ghRetry[hidden] { display: none; }` rule.
 
----
+**[YOU]** My own review: what I read through, what I tested myself (browsers,
+phone), and anything I found.
 
-## 3. Learning Outcomes
+## 4. What I changed in the AI output
 
-**Technical**
+**[YOU]** List your own edits after reviewing the code. For example: wording you
+rewrote, styles you adjusted, code you simplified, or anything you rejected.
+Commit those edits separately, so the history shows the AI's version and your
+changes.
 
-- **CSS custom properties as an architecture, not a convenience.** Before this
-  assignment I used variables to avoid repeating a hex code. I now understand
-  that if *every* colour is a token, an entire alternate theme is one block of
-  overrides — the ~300 lines of layout rules below never mention a colour and
-  never need to change.
-- **`IntersectionObserver` over scroll listeners.** A `scroll` handler fires
-  hundreds of times a second and forces layout on every call. The observer is
-  called by the browser only when an element actually crosses a threshold, so
-  the reveal animations, the counters and the active nav link all cost
-  effectively nothing.
-- **Accessible form validation.** Setting `novalidate` and handling validation
-  myself gives identical behaviour in every browser. Linking each input to its
-  error with `aria-describedby` and `role="alert"` means a screen-reader user
-  hears the error instead of just seeing a red border.
-- **Progressive enhancement.** The statistics show their real values in the HTML
-  and JavaScript animates *from* zero *to* those values. If the script fails,
-  the numbers are still correct.
+## 5. What I learned
 
-**Workflow**
+**[YOU]** In your own words. Points you could cover:
+- why `fetch` needs a `response.ok` check (it only rejects on network failure);
+- why the repo cards use `textContent` instead of `innerHTML`;
+- how the search and filter share one `updateProjects()` function;
+- the `void el.offsetWidth` trick in `replayAnimation()`.
 
-- **Specific prompts produce usable output; vague prompts produce filler.**
-  "Make my portfolio better" returned a feature wish list. "Restructure this
-  stylesheet so a light theme is one variable swap, and change nothing else"
-  returned exactly the diff I wanted.
-- **The review prompt is the highest-value prompt.** Generation saves typing;
-  review catches things I could not have caught myself.
-- **The brief outranks the AI.** Whenever the model's suggestion and the
-  assignment's "keep it simple" instruction conflicted, the brief won.
+## 6. Usage log
 
----
+| ID | Tool (model) | Date | Purpose | Files affected | What I changed and how I verified it |
+| --- | --- | --- | --- | --- | --- |
+| C01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | Plan Assignment 2 and implement project search, GitHub API section, animations, DBF timeline entry; draft README, technical docs and this report | `index.html`, `css/styles.css`, `js/script.js`, `README.md`, `docs/technical-documentation.md`, `docs/ai-usage-report.md`, `.gitignore` | **[YOU]** your changes, and how you verified them |
+| A01 | Claude Code (Claude Opus 5.5) | 2026-10-25 | The code as the AI first produced it, before my edits: the AI-authored commits in this repository | Same as C01 | Kept as the git commits, and exported into `artifacts/` in the evidence ZIP |
 
-## 4. Responsible Use & Modifications
+The C01 conversation also covered unrelated SWE363 lab tasks (labs 5-3 to 5-6)
+before Assignment 2. It is submitted complete and unedited.
 
-I treated every AI response as a draft from a fast colleague who has never seen
-the page render. Concretely:
+## 7. Declaration
 
-**Rejected — external image service.** The AI suggested
-`https://placehold.co/800x500` for the project thumbnails. I rejected it: it
-adds a network request per thumbnail, breaks when the site is opened offline, and makes an
-assignment about HTML/CSS/JS depend on a third party staying online. I asked for
-locally generated SVGs instead — each is under 1.2 KB, stays sharp at any zoom
-level, and is genuinely part of the repository.
+> I declare that this report and the attached evidence document all of my AI use
+> in this assignment, with complete and unedited conversations, and that I
+> understand and can explain all the code I submitted. I understand that
+> undeclared AI use or a false declaration will be treated as plagiarism
+> according to KFUPM regulations.
 
-**Rejected — CSS framework.** Bootstrap was proposed for the layout. The
-assignment allows a framework, but pulling in ~200 KB to replace fifteen lines
-of `grid-template-columns` is the wrong trade, and it would have meant my
-submission was mostly someone else's CSS.
-
-**Fixed — a real contrast bug.** The AI's first light palette reused the dark
-theme's cyan (`#22d3ee`) for accents. Against a near-white card that is roughly
-1.9:1 contrast — far below the WCAG AA minimum of 4.5:1 for body text. I
-replaced it with `#0e7490`, and the pink `#f472b6` with `#be185d`, for the same
-reason. This only surfaced because I opened the page and looked at it.
-
-**Rewrote — form validation.** The generated version leaned on native browser
-validation, which renders differently in every browser. I rewrote it to use
-`novalidate` with my own `rules` object, inline `<p class="error">` messages,
-`.invalid` styling on the field, focus moved to the first invalid input on
-submit, and errors that clear as the visitor types. The regular expression it
-produced (`/\S+@\S+\.\S+/`) accepted `a@b.c`; I tightened it to require at least
-two characters in the top-level domain.
-
-**Corrected — progressive enhancement.** The AI's statistics markup was
-`<b data-count="1700">0</b>` — a literal zero in the HTML. If JavaScript is
-blocked or fails, the page claims I have reached zero students. I changed the
-fallback text to the real value.
-
-**Added — reduced motion.** Nothing in the generated CSS respected
-`prefers-reduced-motion`, and the reveal animation starts at `opacity: 0`, so a
-visitor who disables animations would have seen a blank page. I added the media
-query that forces `.reveal` visible and disables the background animations.
-
-**What I can explain.** I can walk through every line of this submission: why
-the burger menu breakpoint is 1024px and not 768px (the five-item desktop nav
-starts to crowd the logo before 768px), why `applyTheme()` reads `localStorage`
-before `matchMedia` (an explicit choice should outrank the OS default), and why
-the typewriter effect calls `setTimeout` recursively rather than using
-`setInterval` (it needs a different delay for typing, deleting and the pause on
-a completed word).
-
-**Academic integrity.** No code was copied from classmates. Nothing in this
-repository is unmodified AI output pasted in without being read, tested in a
-browser and — in most cases — changed. The AI's role here was that of a tool I
-directed and corrected, and this report documents where it was wrong.
+**Name:** Turki Andous
+**Student ID:** s202348490
+**Date:** **[YOU]**

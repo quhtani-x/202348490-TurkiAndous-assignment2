@@ -11,3 +11,8 @@ Thumbs.db
 
 # Deployment
 .vercel/
+
+# AI evidence (submitted on Blackboard, not committed)
+conversations/
+artifacts/
+*-ai-evidence.zip
