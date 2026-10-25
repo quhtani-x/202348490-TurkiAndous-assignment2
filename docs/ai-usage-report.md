@@ -11,8 +11,7 @@
 | --- | --- | --- |
 | Claude Code (Anthropic), a terminal coding assistant that can read and edit the project files | Claude Opus 5.5 | Wrote the first version of all the Assignment 2 code changes and the drafts of the README and technical documentation, and tested the features in a browser |
 
-I used one tool and two conversations: the first for the assignment features, and
-a second, later one for a CSS style pass and a README update (entry 3 in the usage log).
+I used one tool and one conversation for the whole assignment.
 
 ## 2. What the AI did
 
@@ -33,7 +32,7 @@ it to add what the brief requires without overdoing it. In that conversation it:
    timeline, from the details I gave it (`index.html`).
 6. **Drafted documentation.** Wrote drafts of `README.md`,
    `docs/technical-documentation.md` and this report.
-7. **CSS style pass (second conversation).** On a separate branch
+7. **CSS style pass.** On a separate branch
    (`style/css-refresh`), it reviewed `css/styles.css`, explained eight proposed
    improvements, and only made them after I approved the plan: shared tokens for
    radius and timing, one shared card style, visible focus rings on inputs, hover
@@ -97,7 +96,7 @@ understood them, and they were an eye opener:
 
 2- claude Opus 5.5 , 10-25-2026  | CSS file | i reviwed all the colors and anmiations he made , and changed them based on my prefernces. and made sure that what i changed was actually reflected in the site by testing it.  
 
-3- Claude Opus 5.5 (Claude Code, second conversation) , 10-25-2026 | `css/styles.css`, `README.md`, `docs/ai-usage-report.md` | Asked it to improve my CSS on a new branch and update my outdated README. It explained the 8 changes first and only edited the files after I approved. It tested the result in a browser at desktop and phone sizes, in dark and light themes (hover, focus rings, mobile menu, search and filter). It also added this entry and item 7 in section 2. The changes are in commits on the `style/css-refresh` branch so I can review them before merging.
+3- Claude Opus 5.5 (Claude Code) , 10-25-2026 | `css/styles.css`, `README.md`, `docs/ai-usage-report.md` | Asked it to improve my CSS on a new branch and update my outdated README. It explained the 8 changes first and only edited the files after I approved. It tested the result in a browser at desktop and phone sizes, in dark and light themes (hover, focus rings, mobile menu, search and filter). It also added this entry and item 7 in section 2. The changes are in commits on the `style/css-refresh` branch so I can review them before merging.
 
 
 
