@@ -135,6 +135,13 @@ const counterObserver = new IntersectionObserver(
 );
 document.querySelectorAll(".stat b").forEach((el) => counterObserver.observe(el));
 
+// restart a CSS animation class even if it is already on the element
+function replayAnimation(el, className) {
+  el.classList.remove(className);
+  void el.offsetWidth;
+  el.classList.add(className);
+}
+
 // ===== project filter + live search (both apply together) =====
 const filters = document.getElementById("filters");
 const projectCards = document.querySelectorAll("#projGrid .pcard");
@@ -160,6 +167,7 @@ function updateProjects() {
     const inCategory = activeCategory === "all" || card.dataset.category === activeCategory;
     const matches = !term || card.textContent.toLowerCase().includes(term);
     const show = inCategory && matches;
+    if (show && card.hidden) replayAnimation(card, "pop");
     card.hidden = !show;
     if (show) visible++;
   });
@@ -297,11 +305,13 @@ form.addEventListener("submit", (e) => {
   const invalid = inputs.filter((input) => !validateField(input));
 
   if (invalid.length) {
+    invalid.forEach((input) => replayAnimation(input.closest(".field"), "shake"));
     invalid[0].focus();
     return;
   }
 
   formStatus.textContent = `Thanks, ${document.getElementById("name").value.trim()}! Your message is ready — I'll get back to you soon.`;
+  replayAnimation(formStatus, "show");
   form.reset();
 });
 
