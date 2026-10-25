@@ -15,24 +15,15 @@ I used one tool and one conversation for the whole assignment.
 
 ## 2. What the AI did
 
-I gave Claude my Assignment 1 repository and the Assignment 2 brief, and asked
-it to add what the brief requires without overdoing it. In that conversation it:
-
-1. **Set up the project.** Copied my Assignment 1 site into a new local folder as
-   the starting point.
-2. **Added live project search.** Added a search box that works together with
-   the existing category filter, a result counter, and an empty state with a reset
-   button (`index.html`, `css/styles.css`, `js/script.js`).
-3. **Added the GitHub repos section.** Fetches my latest public repos from the
-   GitHub API, with loading, error, retry and empty states (same three files).
-4. **Added animations.** Fade-in for cards, a shake on invalid form fields, and an
+I gave Claude my Assignment 2 repo and asked him to help me with my css and readme,md 
+1 **Added animations.** Fade-in for cards, a shake on invalid form fields, and an
    animated success message, all disabled under reduced motion (`css/styles.css`,
    `js/script.js`).
-5. **Updated content.** Added my AIAA Design/Build/Fly role to the experience
+2. **Updated content.** Added my AIAA Design/Build/Fly role to the experience
    timeline, from the details I gave it (`index.html`).
-6. **Drafted documentation.** Wrote drafts of `README.md`,
+3. **Drafted documentation.** Wrote drafts of `README.md`,
    `docs/technical-documentation.md` and this report.
-7. **CSS style pass.** On a separate branch
+4. **CSS style pass.** On a separate branch
    (`style/css-refresh`), it reviewed `css/styles.css`, explained eight proposed
    improvements, and only made them after I approved the plan: shared tokens for
    radius and timing, one shared card style, visible focus rings on inputs, hover
